@@ -42,7 +42,7 @@ struct {
 } DIA_Table;
 
 #define LightCount 153
-#define TempChkInterval 1
+#define TempChkInterval 10
 /*
  * 
  */
@@ -359,7 +359,7 @@ void ledFaultCheck(void){
             currentStatus = Error;
             errReason = LEDDrvErr;
     }
-    if((currentStatus == Error) && (Led == 1) && (Fault == 1)){
+    if((currentStatus == Error) && (errReason == LEDDrvErr) &&(Led == 1) && (Fault == 1)){
         currentStatus = Normal;
         errReason = NoErr;
     }
@@ -406,7 +406,9 @@ void __interrupt() int_handler(){
     // IOC handler, we enable 
     if(PIE0bits.IOCIE && IOCAF7 ){
          IOCAF7 = 0;
-         __delay_ms(100);
+         if(currentStatus == Normal){
+         
+         __delay_ms(150);
          if(PORTAbits.RA7 == 0){
              
              Led = ~Led;
@@ -418,6 +420,8 @@ void __interrupt() int_handler(){
              }else {
                  FAN = 0;
              }
+         }
+         
              
         
          

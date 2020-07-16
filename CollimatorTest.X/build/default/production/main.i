@@ -12832,7 +12832,7 @@ void ledFaultCheck(void){
             currentStatus = Error;
             errReason = LEDDrvErr;
     }
-    if((currentStatus == Error) && (LATCbits.LATC2 == 1) && (PORTBbits.RB0 == 1)){
+    if((currentStatus == Error) && (errReason == LEDDrvErr) &&(LATCbits.LATC2 == 1) && (PORTBbits.RB0 == 1)){
         currentStatus = Normal;
         errReason = NoErr;
     }
@@ -12879,7 +12879,9 @@ void __attribute__((picinterrupt(("")))) int_handler(){
 
     if(PIE0bits.IOCIE && IOCAF7 ){
          IOCAF7 = 0;
-         _delay((unsigned long)((100)*(32000000/4000.0)));
+         if(currentStatus == Normal){
+
+         _delay((unsigned long)((150)*(32000000/4000.0)));
          if(PORTAbits.RA7 == 0){
 
              LATCbits.LATC2 = ~LATCbits.LATC2;
@@ -12891,7 +12893,8 @@ void __attribute__((picinterrupt(("")))) int_handler(){
              }else {
                  LATCbits.LATC7 = 0;
              }
-# 435 "main.c"
+         }
+# 439 "main.c"
          }
     }
 
@@ -12943,7 +12946,7 @@ int main(int argc, char** argv) {
                 if(LATCbits.LATC2 == 0){
                     LATCbits.LATC7 = 0;
                 }
-                if(checkCount >= 1){
+                if(checkCount >= 10){
                   temperatureCheck();
                   checkCount = 0;
                 } else {
@@ -12968,7 +12971,7 @@ int main(int argc, char** argv) {
             break;
 
         }
-# 520 "main.c"
+# 524 "main.c"
    }
 
     return (0);

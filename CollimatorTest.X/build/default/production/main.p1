@@ -1931,8 +1931,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e :U 1014 ]
 "362
-[; ;main.c: 362:     if((currentStatus == Error) && (LATCbits.LATC2 == 1) && (PORTBbits.RB0 == 1)){
-[e $ ! && && == -> _currentStatus `ui -> . `E7604 2 `ui == -> . . _LATCbits 0 2 `i -> 1 `i == -> . . _PORTBbits 0 0 `i -> 1 `i 1015  ]
+[; ;main.c: 362:     if((currentStatus == Error) && (errReason == LEDDrvErr) &&(LATCbits.LATC2 == 1) && (PORTBbits.RB0 == 1)){
+[e $ ! && && && == -> _currentStatus `ui -> . `E7604 2 `ui == -> _errReason `ui -> . `E7608 4 `ui == -> . . _LATCbits 0 2 `i -> 1 `i == -> . . _PORTBbits 0 0 `i -> 1 `i 1015  ]
 {
 "363
 [; ;main.c: 363:         currentStatus = Normal;
@@ -2055,253 +2055,261 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;main.c: 408:          IOCAF7 = 0;
 [e = _IOCAF7 -> -> 0 `i `b ]
 "409
-[; ;main.c: 409:          _delay((unsigned long)((100)*(32000000/4000.0)));
-[e ( __delay (1 -> * -> -> 100 `i `d / -> -> 32000000 `l `d .4000.0 `ul ]
-"410
-[; ;main.c: 410:          if(PORTAbits.RA7 == 0){
-[e $ ! == -> . . _PORTAbits 0 7 `i -> 0 `i 1027  ]
+[; ;main.c: 409:          if(currentStatus == Normal){
+[e $ ! == -> _currentStatus `ui -> . `E7604 0 `ui 1027  ]
 {
+"411
+[; ;main.c: 411:          _delay((unsigned long)((150)*(32000000/4000.0)));
+[e ( __delay (1 -> * -> -> 150 `i `d / -> -> 32000000 `l `d .4000.0 `ul ]
 "412
-[; ;main.c: 412:              LATCbits.LATC2 = ~LATCbits.LATC2;
-[e = . . _LATCbits 0 2 -> ~ -> . . _LATCbits 0 2 `i `uc ]
-"413
-[; ;main.c: 413:              LATCbits.LATC5 = ~LATCbits.LATC5;
-[e = . . _LATCbits 0 5 -> ~ -> . . _LATCbits 0 5 `i `uc ]
-"416
-[; ;main.c: 416:              if(LATCbits.LATC2 == 1){
-[e $ ! == -> . . _LATCbits 0 2 `i -> 1 `i 1028  ]
+[; ;main.c: 412:          if(PORTAbits.RA7 == 0){
+[e $ ! == -> . . _PORTAbits 0 7 `i -> 0 `i 1028  ]
 {
-"417
-[; ;main.c: 417:                  LATCbits.LATC7 = 1;
-[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
+"414
+[; ;main.c: 414:              LATCbits.LATC2 = ~LATCbits.LATC2;
+[e = . . _LATCbits 0 2 -> ~ -> . . _LATCbits 0 2 `i `uc ]
+"415
+[; ;main.c: 415:              LATCbits.LATC5 = ~LATCbits.LATC5;
+[e = . . _LATCbits 0 5 -> ~ -> . . _LATCbits 0 5 `i `uc ]
 "418
-[; ;main.c: 418:              }else {
-}
-[e $U 1029  ]
-[e :U 1028 ]
+[; ;main.c: 418:              if(LATCbits.LATC2 == 1){
+[e $ ! == -> . . _LATCbits 0 2 `i -> 1 `i 1029  ]
 {
 "419
-[; ;main.c: 419:                  LATCbits.LATC7 = 0;
-[e = . . _LATCbits 0 7 -> -> 0 `i `uc ]
+[; ;main.c: 419:                  LATCbits.LATC7 = 1;
+[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
 "420
-[; ;main.c: 420:              }
+[; ;main.c: 420:              }else {
 }
+[e $U 1030  ]
 [e :U 1029 ]
-"435
-[; ;main.c: 435:          }
-}
-[e :U 1027 ]
-"436
-[; ;main.c: 436:     }
-}
-[e :U 1026 ]
-"439
-[; ;main.c: 439:     if(TMR0IE && TMR0IF){
-[e $ ! && _TMR0IE _TMR0IF 1030  ]
 {
-"441
-[; ;main.c: 441:         TMR0IF = 0;
-[e = _TMR0IF -> -> 0 `i `b ]
-"442
-[; ;main.c: 442:         if(timerCounter <= 152){
-[e $ ! <= _timerCounter -> -> -> 152 `i `l `ul 1031  ]
-{
-"444
-[; ;main.c: 444:             timerCounter++;
-[e ++ _timerCounter -> -> -> 1 `i `l `ul ]
-"445
-[; ;main.c: 445:         }
-}
-[e $U 1032  ]
-"446
-[; ;main.c: 446:         else{
-[e :U 1031 ]
-{
-"447
-[; ;main.c: 447:             TMR0IE = 0;
-[e = _TMR0IE -> -> 0 `i `b ]
-"448
-[; ;main.c: 448:             timerCounter = 0;
-[e = _timerCounter -> -> -> 0 `i `l `ul ]
-"450
-[; ;main.c: 450:         }
-}
-[e :U 1032 ]
-"451
-[; ;main.c: 451:     }
+"421
+[; ;main.c: 421:                  LATCbits.LATC7 = 0;
+[e = . . _LATCbits 0 7 -> -> 0 `i `uc ]
+"422
+[; ;main.c: 422:              }
 }
 [e :U 1030 ]
+"423
+[; ;main.c: 423:          }
+}
+[e :U 1028 ]
+"439
+[; ;main.c: 439:          }
+}
+[e :U 1027 ]
+"440
+[; ;main.c: 440:     }
+}
+[e :U 1026 ]
+"443
+[; ;main.c: 443:     if(TMR0IE && TMR0IF){
+[e $ ! && _TMR0IE _TMR0IF 1031  ]
+{
+"445
+[; ;main.c: 445:         TMR0IF = 0;
+[e = _TMR0IF -> -> 0 `i `b ]
+"446
+[; ;main.c: 446:         if(timerCounter <= 152){
+[e $ ! <= _timerCounter -> -> -> 152 `i `l `ul 1032  ]
+{
+"448
+[; ;main.c: 448:             timerCounter++;
+[e ++ _timerCounter -> -> -> 1 `i `l `ul ]
+"449
+[; ;main.c: 449:         }
+}
+[e $U 1033  ]
+"450
+[; ;main.c: 450:         else{
+[e :U 1032 ]
+{
+"451
+[; ;main.c: 451:             TMR0IE = 0;
+[e = _TMR0IE -> -> 0 `i `b ]
+"452
+[; ;main.c: 452:             timerCounter = 0;
+[e = _timerCounter -> -> -> 0 `i `l `ul ]
 "454
-[; ;main.c: 454:     if(PIE1bits.ADIE && PIR1bits.ADIF){
-[e $ ! && != -> . . _PIE1bits 0 0 `i -> 0 `i != -> . . _PIR1bits 0 0 `i -> 0 `i 1033  ]
-{
-"456
-[; ;main.c: 456:         PIR1bits.ADIF = 0;
-[e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
-"457
-[; ;main.c: 457:         float voltage = ((float)ADRES/1023)*DIA_Table.FVRA1X;
-[v _voltage `f ~T0 @X0 1 a ]
-[e = _voltage * / -> _ADRES `f -> -> 1023 `i `f -> . _DIA_Table 2 `f ]
-"459
-[; ;main.c: 459:         if(voltage < 2 ){
-[e $ ! < _voltage -> -> 2 `i `f 1034  ]
-{
-"461
-[; ;main.c: 461:             LATCbits.LATC0 = 1;
-[e = . . _LATCbits 0 0 -> -> 1 `i `uc ]
-"462
-[; ;main.c: 462:             TRISCbits.TRISC0 = 0;
-[e = . . _TRISCbits 0 0 -> -> 0 `i `uc ]
-"463
-[; ;main.c: 463:         }else {
-}
-[e $U 1035  ]
-[e :U 1034 ]
-{
-"464
-[; ;main.c: 464:             LATCbits.LATC0 = 0;
-[e = . . _LATCbits 0 0 -> -> 0 `i `uc ]
-"465
-[; ;main.c: 465:             TRISCbits.TRISC0 = 0;
-[e = . . _TRISCbits 0 0 -> -> 0 `i `uc ]
-"466
-[; ;main.c: 466:         }
-}
-[e :U 1035 ]
-"468
-[; ;main.c: 468:     }
+[; ;main.c: 454:         }
 }
 [e :U 1033 ]
+"455
+[; ;main.c: 455:     }
+}
+[e :U 1031 ]
+"458
+[; ;main.c: 458:     if(PIE1bits.ADIE && PIR1bits.ADIF){
+[e $ ! && != -> . . _PIE1bits 0 0 `i -> 0 `i != -> . . _PIR1bits 0 0 `i -> 0 `i 1034  ]
+{
+"460
+[; ;main.c: 460:         PIR1bits.ADIF = 0;
+[e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
+"461
+[; ;main.c: 461:         float voltage = ((float)ADRES/1023)*DIA_Table.FVRA1X;
+[v _voltage `f ~T0 @X0 1 a ]
+[e = _voltage * / -> _ADRES `f -> -> 1023 `i `f -> . _DIA_Table 2 `f ]
+"463
+[; ;main.c: 463:         if(voltage < 2 ){
+[e $ ! < _voltage -> -> 2 `i `f 1035  ]
+{
+"465
+[; ;main.c: 465:             LATCbits.LATC0 = 1;
+[e = . . _LATCbits 0 0 -> -> 1 `i `uc ]
+"466
+[; ;main.c: 466:             TRISCbits.TRISC0 = 0;
+[e = . . _TRISCbits 0 0 -> -> 0 `i `uc ]
+"467
+[; ;main.c: 467:         }else {
+}
+[e $U 1036  ]
+[e :U 1035 ]
+{
+"468
+[; ;main.c: 468:             LATCbits.LATC0 = 0;
+[e = . . _LATCbits 0 0 -> -> 0 `i `uc ]
 "469
-[; ;main.c: 469: }
+[; ;main.c: 469:             TRISCbits.TRISC0 = 0;
+[e = . . _TRISCbits 0 0 -> -> 0 `i `uc ]
+"470
+[; ;main.c: 470:         }
+}
+[e :U 1036 ]
+"472
+[; ;main.c: 472:     }
+}
+[e :U 1034 ]
+"473
+[; ;main.c: 473: }
 [e :UE 1025 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"471
-[; ;main.c: 471: int main(int argc, char** argv) {
+"475
+[; ;main.c: 475: int main(int argc, char** argv) {
 [v _main `(i ~T0 @X0 1 ef2`i`**uc ]
 {
 [e :U _main ]
 [v _argc `i ~T0 @X0 1 r1 ]
 [v _argv `**uc ~T0 @X0 1 r2 ]
 [f ]
-"473
-[; ;main.c: 473:     init();
+"477
+[; ;main.c: 477:     init();
 [e ( _init ..  ]
-"474
-[; ;main.c: 474:     int checkCount = 0;
+"478
+[; ;main.c: 478:     int checkCount = 0;
 [v _checkCount `i ~T0 @X0 1 a ]
 [e = _checkCount -> 0 `i ]
-"476
-[; ;main.c: 476:     while(1){
-[e :U 1038 ]
-{
-"477
-[; ;main.c: 477:         switch(currentStatus)
-[e $U 1041  ]
-"478
-[; ;main.c: 478:         {
-{
-"479
-[; ;main.c: 479:             case Normal:
-[e :U 1042 ]
 "480
-[; ;main.c: 480:                 HeartBeatFlush();
-[e ( _HeartBeatFlush ..  ]
+[; ;main.c: 480:     while(1){
+[e :U 1039 ]
+{
+"481
+[; ;main.c: 481:         switch(currentStatus)
+[e $U 1042  ]
+"482
+[; ;main.c: 482:         {
+{
 "483
-[; ;main.c: 483:                 if(LATCbits.LATC2 == 0){
-[e $ ! == -> . . _LATCbits 0 2 `i -> 0 `i 1043  ]
-{
-"484
-[; ;main.c: 484:                     LATCbits.LATC7 = 0;
-[e = . . _LATCbits 0 7 -> -> 0 `i `uc ]
-"485
-[; ;main.c: 485:                 }
-}
+[; ;main.c: 483:             case Normal:
 [e :U 1043 ]
-"486
-[; ;main.c: 486:                 if(checkCount >= 1){
-[e $ ! >= _checkCount -> 1 `i 1044  ]
-{
+"484
+[; ;main.c: 484:                 HeartBeatFlush();
+[e ( _HeartBeatFlush ..  ]
 "487
-[; ;main.c: 487:                   temperatureCheck();
-[e ( _temperatureCheck ..  ]
+[; ;main.c: 487:                 if(LATCbits.LATC2 == 0){
+[e $ ! == -> . . _LATCbits 0 2 `i -> 0 `i 1044  ]
+{
 "488
-[; ;main.c: 488:                   checkCount = 0;
-[e = _checkCount -> 0 `i ]
+[; ;main.c: 488:                     LATCbits.LATC7 = 0;
+[e = . . _LATCbits 0 7 -> -> 0 `i `uc ]
 "489
-[; ;main.c: 489:                 } else {
+[; ;main.c: 489:                 }
 }
-[e $U 1045  ]
 [e :U 1044 ]
-{
 "490
-[; ;main.c: 490:                     checkCount ++;
-[e ++ _checkCount -> 1 `i ]
-"491
-[; ;main.c: 491:                 }
-}
-[e :U 1045 ]
-"492
-[; ;main.c: 492:                ledFaultCheck();
-[e ( _ledFaultCheck ..  ]
-"493
-[; ;main.c: 493:             break;
-[e $U 1040  ]
-"495
-[; ;main.c: 495:             case Error:
-[e :U 1046 ]
-"497
-[; ;main.c: 497:                 if((errReason == BoardHiTempErr) || (errReason == LEDHiTempErr))
-[e $ ! || == -> _errReason `ui -> . `E7608 3 `ui == -> _errReason `ui -> . `E7608 2 `ui 1047  ]
-"498
-[; ;main.c: 498:                 {
+[; ;main.c: 490:                 if(checkCount >= 10){
+[e $ ! >= _checkCount -> 10 `i 1045  ]
 {
-"499
-[; ;main.c: 499:                   LATCbits.LATC2 = 0;
-[e = . . _LATCbits 0 2 -> -> 0 `i `uc ]
-"500
-[; ;main.c: 500:                   LATCbits.LATC5 = 0;
-[e = . . _LATCbits 0 5 -> -> 0 `i `uc ]
-"501
-[; ;main.c: 501:                   LATCbits.LATC7 = 1;
-[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
-"502
-[; ;main.c: 502:                 }
+"491
+[; ;main.c: 491:                   temperatureCheck();
+[e ( _temperatureCheck ..  ]
+"492
+[; ;main.c: 492:                   checkCount = 0;
+[e = _checkCount -> 0 `i ]
+"493
+[; ;main.c: 493:                 } else {
 }
+[e $U 1046  ]
+[e :U 1045 ]
+{
+"494
+[; ;main.c: 494:                     checkCount ++;
+[e ++ _checkCount -> 1 `i ]
+"495
+[; ;main.c: 495:                 }
+}
+[e :U 1046 ]
+"496
+[; ;main.c: 496:                ledFaultCheck();
+[e ( _ledFaultCheck ..  ]
+"497
+[; ;main.c: 497:             break;
+[e $U 1041  ]
+"499
+[; ;main.c: 499:             case Error:
 [e :U 1047 ]
+"501
+[; ;main.c: 501:                 if((errReason == BoardHiTempErr) || (errReason == LEDHiTempErr))
+[e $ ! || == -> _errReason `ui -> . `E7608 3 `ui == -> _errReason `ui -> . `E7608 2 `ui 1048  ]
+"502
+[; ;main.c: 502:                 {
+{
 "503
-[; ;main.c: 503:                ErrHanler();
-[e ( _ErrHanler ..  ]
+[; ;main.c: 503:                   LATCbits.LATC2 = 0;
+[e = . . _LATCbits 0 2 -> -> 0 `i `uc ]
 "504
-[; ;main.c: 504:             break;
-[e $U 1040  ]
+[; ;main.c: 504:                   LATCbits.LATC5 = 0;
+[e = . . _LATCbits 0 5 -> -> 0 `i `uc ]
+"505
+[; ;main.c: 505:                   LATCbits.LATC7 = 1;
+[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
 "506
-[; ;main.c: 506:             default:
+[; ;main.c: 506:                 }
+}
 [e :U 1048 ]
+"507
+[; ;main.c: 507:                ErrHanler();
+[e ( _ErrHanler ..  ]
 "508
 [; ;main.c: 508:             break;
-[e $U 1040  ]
+[e $U 1041  ]
 "510
-[; ;main.c: 510:         }
+[; ;main.c: 510:             default:
+[e :U 1049 ]
+"512
+[; ;main.c: 512:             break;
+[e $U 1041  ]
+"514
+[; ;main.c: 514:         }
 }
-[e $U 1040  ]
+[e $U 1041  ]
+[e :U 1042 ]
+[e [\ -> _currentStatus `ui , $ -> . `E7604 0 `ui 1043
+ , $ -> . `E7604 2 `ui 1047
+ 1049 ]
 [e :U 1041 ]
-[e [\ -> _currentStatus `ui , $ -> . `E7604 0 `ui 1042
- , $ -> . `E7604 2 `ui 1046
- 1048 ]
-[e :U 1040 ]
-"520
-[; ;main.c: 520:    }
+"524
+[; ;main.c: 524:    }
 }
-[e :U 1037 ]
-[e $U 1038  ]
-[e :U 1039 ]
-"522
-[; ;main.c: 522:     return (0);
+[e :U 1038 ]
+[e $U 1039  ]
+[e :U 1040 ]
+"526
+[; ;main.c: 526:     return (0);
 [e ) -> 0 `i ]
-[e $UE 1036  ]
-"523
-[; ;main.c: 523: }
-[e :UE 1036 ]
+[e $UE 1037  ]
+"527
+[; ;main.c: 527: }
+[e :UE 1037 ]
 }

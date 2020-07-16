@@ -54,7 +54,7 @@ LEDDrvErr 4
 [v _ErrHanler ErrHanler `(v  1 e 1 0 ]
 "404
 [v _int_handler int_handler `II(v  1 e 1 0 ]
-"471
+"475
 [v _main main `(i  1 e 2 0 ]
 [s S65 . 1 `uc 1 INTEDG 1 0 :1:0 
 `uc 1 . 1 0 :5:1 
@@ -321,12 +321,12 @@ LEDDrvErr 4
 [v _intNTCV intNTCV `f  1 e 4 0 ]
 "60
 [v _extNTCV extNTCV `f  1 e 4 0 ]
-"471
+"475
 [v _main main `(i  1 e 2 0 ]
 {
-"474
+"478
 [v main@checkCount checkCount `i  1 a 2 12 ]
-"523
+"527
 } 0
 "140
 [v _init init `(v  1 e 1 0 ]
@@ -468,9 +468,9 @@ LEDDrvErr 4
 "404
 [v _int_handler int_handler `II(v  1 e 1 0 ]
 {
-"457
+"461
 [v int_handler@voltage voltage `f  1 a 4 54 ]
-"469
+"473
 } 0
 "10 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\xxtofl.c
 [v i1___xxtofl __xxtofl `(d  1 e 4 0 ]
