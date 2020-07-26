@@ -3,13 +3,13 @@
 [d edition pro ]
 [d chip 16F15354 ]
 [d frameptr 6 ]
-"51 E:\pic collimator\CollimatorTest\CollimatorTest.X\main.c
+"49 E:\pic collimator\CollimatorTest\CollimatorTest.X\main.c
 [e E7604 Status `uc
 Normal 0
 Init 1
 Error 2
 ]
-"52
+"50
 [e E7608 ErrReason `uc
 NoErr 0
 InitErr 1
@@ -19,42 +19,39 @@ LEDDrvErr 4
 ]
 "4 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\flge.c
 [v ___flge __flge `(b  1 e 0 0 ]
-[v i1___flge __flge `(b  1 e 0 0 ]
 "10 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\sprcadd.c
 [v ___fladd __fladd `(d  1 e 4 0 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\sprcdiv.c
 [v ___fldiv __fldiv `(d  1 e 4 0 ]
-[v i1___fldiv __fldiv `(d  1 e 4 0 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\sprcmul.c
 [v ___flmul __flmul `(d  1 e 4 0 ]
-[v i1___flmul __flmul `(d  1 e 4 0 ]
 "4 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\Umul8_16.c
 [v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
-[v i1__Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
 "10 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\xxtofl.c
 [v ___xxtofl __xxtofl `(d  1 e 4 0 ]
-[v i1___xxtofl __xxtofl `(d  1 e 4 0 ]
-"64 E:\pic collimator\CollimatorTest\CollimatorTest.X\main.c
+"65 E:\pic collimator\CollimatorTest\CollimatorTest.X\main.c
 [v _read_DIA read_DIA `(ui  1 e 2 0 ]
-"75
+"76
 [v _initDIA initDIA `(v  1 e 1 0 ]
-"140
+"141
 [v _init init `(v  1 e 1 0 ]
-"226
+"231
 [v _getNTCV getNTCV `(f  1 e 4 0 ]
-"299
+"304
 [v _HeartBeatFlush HeartBeatFlush `(v  1 e 1 0 ]
-"319
+"324
 [v _ErrFlush ErrFlush `(v  1 e 1 0 ]
-"333
+"338
 [v _temperatureCheck temperatureCheck `(v  1 e 1 0 ]
-"356
+"361
 [v _ledFaultCheck ledFaultCheck `(v  1 e 1 0 ]
-"370
+"374
+[v _FANFaultCheck FANFaultCheck `(v  1 e 1 0 ]
+"381
 [v _ErrHanler ErrHanler `(v  1 e 1 0 ]
-"404
+"415
 [v _int_handler int_handler `II(v  1 e 1 0 ]
-"475
+"476
 [v _main main `(i  1 e 2 0 ]
 [s S65 . 1 `uc 1 INTEDG 1 0 :1:0 
 `uc 1 . 1 0 :5:1 
@@ -169,6 +166,10 @@ LEDDrvErr 4
 ]
 [u S281 . 1 `S269 1 . 1 0 `S277 1 . 1 0 ]
 [v _ADCON1bits ADCON1bits `VES281  1 e 1 @158 ]
+"7734
+[v _TMR0L TMR0L `VEuc  1 e 1 @1436 ]
+"7872
+[v _TMR0H TMR0H `VEuc  1 e 1 @1437 ]
 [s S361 . 1 `uc 1 T0CKPS 1 0 :4:0 
 `uc 1 T0ASYNC 1 0 :1:4 
 `uc 1 T0CS 1 0 :3:5 
@@ -309,105 +310,110 @@ LEDDrvErr 4
 "25779
 [v _TMR0IF TMR0IF `VEb  1 e 0 @14437 ]
 [s S22 . 16 `ui 1 TSLR2 2 0 `ui 1 TSHR2 2 2 `ui 1 FVRA1X 2 4 `ui 1 FVRA2X 2 6 `ui 1 FVRA4X 2 8 `ui 1 FVRC1X 2 10 `ui 1 FVRC2X 2 12 `ui 1 FVRC4X 2 14 ]
-"42 E:\pic collimator\CollimatorTest\CollimatorTest.X\main.c
+"41 E:\pic collimator\CollimatorTest\CollimatorTest.X\main.c
 [v _DIA_Table DIA_Table `S22  1 e 16 0 ]
-"50
+"48
 [v _timerCounter timerCounter `ul  1 e 4 0 ]
-"51
+"49
 [v _currentStatus currentStatus `E7604  1 e 1 0 ]
-"52
+"50
 [v _errReason errReason `E7608  1 e 1 0 ]
-"59
-[v _intNTCV intNTCV `f  1 e 4 0 ]
 "60
+[v _intNTCV intNTCV `f  1 e 4 0 ]
+"61
 [v _extNTCV extNTCV `f  1 e 4 0 ]
-"475
+"476
 [v _main main `(i  1 e 2 0 ]
 {
-"478
-[v main@checkCount checkCount `i  1 a 2 12 ]
-"527
+"479
+[v main@checkCount checkCount `i  1 a 2 6 ]
+"529
 } 0
-"140
+"141
 [v _init init `(v  1 e 1 0 ]
 {
-"223
+"228
 } 0
-"75
+"76
 [v _initDIA initDIA `(v  1 e 1 0 ]
 {
-"84
+"85
 } 0
-"64
+"65
 [v _read_DIA read_DIA `(ui  1 e 2 0 ]
 {
-[v read_DIA@Add Add `ui  1 p 2 0 ]
-"73
+[v read_DIA@Add Add `ui  1 p 2 2 ]
+"74
 } 0
-"299
+"304
 [v _HeartBeatFlush HeartBeatFlush `(v  1 e 1 0 ]
 {
-"307
+"312
 } 0
-"370
+"374
+[v _FANFaultCheck FANFaultCheck `(v  1 e 1 0 ]
+{
+"376
+} 0
+"381
 [v _ErrHanler ErrHanler `(v  1 e 1 0 ]
 {
-"399
+"410
 } 0
-"333
+"338
 [v _temperatureCheck temperatureCheck `(v  1 e 1 0 ]
 {
-"352
+"357
 } 0
-"226
+"231
 [v _getNTCV getNTCV `(f  1 e 4 0 ]
 {
-"230
-[v getNTCV@voltage voltage `f  1 a 4 8 ]
-"229
-[v getNTCV@VDD VDD `f  1 a 4 4 ]
-"226
-[v getNTCV@channel channel `ui  1 p 2 66 ]
-"255
+"235
+[v getNTCV@voltage voltage `f  1 a 4 71 ]
+"234
+[v getNTCV@VDD VDD `f  1 a 4 67 ]
+"231
+[v getNTCV@channel channel `ui  1 p 2 58 ]
+"260
 } 0
 "10 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\xxtofl.c
 [v ___xxtofl __xxtofl `(d  1 e 4 0 ]
 {
 [v ___xxtofl@sign sign `uc  1 a 1 wreg ]
 "13
-[v ___xxtofl@arg arg `ul  1 a 4 10 ]
+[v ___xxtofl@arg arg `ul  1 a 4 2 ]
 "12
-[v ___xxtofl@exp exp `uc  1 a 1 9 ]
+[v ___xxtofl@exp exp `uc  1 a 1 1 ]
 "10
 [v ___xxtofl@sign sign `uc  1 a 1 wreg ]
-[v ___xxtofl@val val `l  1 p 4 0 ]
+[v ___xxtofl@val val `l  1 p 4 2 ]
 "15
-[v ___xxtofl@sign sign `uc  1 a 1 8 ]
+[v ___xxtofl@sign sign `uc  1 a 1 0 ]
 "44
 } 0
 "8 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\sprcmul.c
 [v ___flmul __flmul `(d  1 e 4 0 ]
 {
-[s S798 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
+[s S803 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
 "13
-[s S803 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
-[u S806 . 4 `l 1 i 4 0 `d 1 f 4 0 `S798 1 fAsBytes 4 0 `S803 1 fAsWords 4 0 ]
-[v ___flmul@prod prod `S806  1 a 4 60 ]
+[s S808 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
+[u S811 . 4 `l 1 i 4 0 `d 1 f 4 0 `S803 1 fAsBytes 4 0 `S808 1 fAsWords 4 0 ]
+[v ___flmul@prod prod `S811  1 a 4 52 ]
 "12
-[v ___flmul@grs grs `ul  1 a 4 54 ]
-[s S875 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
+[v ___flmul@grs grs `ul  1 a 4 46 ]
+[s S880 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
 "14
-[u S878 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S875 1 nAsBytes 2 0 ]
-[v ___flmul@temp temp `S878  1 a 2 64 ]
+[u S883 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S880 1 nAsBytes 2 0 ]
+[v ___flmul@temp temp `S883  1 a 2 56 ]
 "10
-[v ___flmul@bexp bexp `uc  1 a 1 59 ]
+[v ___flmul@bexp bexp `uc  1 a 1 51 ]
 "11
-[v ___flmul@aexp aexp `uc  1 a 1 58 ]
+[v ___flmul@aexp aexp `uc  1 a 1 50 ]
 "9
-[v ___flmul@sign sign `uc  1 a 1 53 ]
+[v ___flmul@sign sign `uc  1 a 1 45 ]
 "8
-[v ___flmul@b b `d  1 p 4 40 ]
-[v ___flmul@a a `d  1 p 4 44 ]
+[v ___flmul@b b `d  1 p 4 32 ]
+[v ___flmul@a a `d  1 p 4 36 ]
 "205
 } 0
 "4 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\Umul8_16.c
@@ -415,121 +421,58 @@ LEDDrvErr 4
 {
 [v __Umul8_16@multiplier multiplier `uc  1 a 1 wreg ]
 "6
-[v __Umul8_16@word_mpld word_mpld `ui  1 a 2 6 ]
+[v __Umul8_16@word_mpld word_mpld `ui  1 a 2 8 ]
 "5
-[v __Umul8_16@product product `ui  1 a 2 4 ]
+[v __Umul8_16@product product `ui  1 a 2 6 ]
 "4
 [v __Umul8_16@multiplier multiplier `uc  1 a 1 wreg ]
-[v __Umul8_16@multiplicand multiplicand `uc  1 p 1 0 ]
-[v __Umul8_16@multiplier multiplier `uc  1 a 1 8 ]
+[v __Umul8_16@multiplicand multiplicand `uc  1 p 1 2 ]
+[v __Umul8_16@multiplier multiplier `uc  1 a 1 10 ]
 "60
 } 0
 "8 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\sprcdiv.c
 [v ___fldiv __fldiv `(d  1 e 4 0 ]
 {
 "21
-[v ___fldiv@grs grs `ul  1 a 4 34 ]
+[v ___fldiv@grs grs `ul  1 a 4 26 ]
 "22
-[v ___fldiv@rem rem `ul  1 a 4 27 ]
+[v ___fldiv@rem rem `ul  1 a 4 19 ]
 "20
-[v ___fldiv@new_exp new_exp `i  1 a 2 32 ]
+[v ___fldiv@new_exp new_exp `i  1 a 2 24 ]
 "19
-[v ___fldiv@aexp aexp `uc  1 a 1 39 ]
+[v ___fldiv@aexp aexp `uc  1 a 1 31 ]
 "18
-[v ___fldiv@bexp bexp `uc  1 a 1 38 ]
+[v ___fldiv@bexp bexp `uc  1 a 1 30 ]
 "16
-[v ___fldiv@sign sign `uc  1 a 1 31 ]
+[v ___fldiv@sign sign `uc  1 a 1 23 ]
 "8
-[v ___fldiv@a a `d  1 p 4 14 ]
-[v ___fldiv@b b `d  1 p 4 18 ]
+[v ___fldiv@a a `d  1 p 4 6 ]
+[v ___fldiv@b b `d  1 p 4 10 ]
 "185
 } 0
 "4 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\flge.c
 [v ___flge __flge `(b  1 e 0 0 ]
 {
-[v ___flge@ff1 ff1 `d  1 p 4 0 ]
-[v ___flge@ff2 ff2 `d  1 p 4 4 ]
+[v ___flge@ff1 ff1 `d  1 p 4 2 ]
+[v ___flge@ff2 ff2 `d  1 p 4 6 ]
 "19
 } 0
-"356 E:\pic collimator\CollimatorTest\CollimatorTest.X\main.c
+"361 E:\pic collimator\CollimatorTest\CollimatorTest.X\main.c
 [v _ledFaultCheck ledFaultCheck `(v  1 e 1 0 ]
 {
-"366
+"371
 } 0
-"319
+"324
 [v _ErrFlush ErrFlush `(v  1 e 1 0 ]
 {
-"323
-[v ErrFlush@i i `i  1 a 2 4 ]
-"319
-[v ErrFlush@count count `i  1 p 2 0 ]
-"329
+"328
+[v ErrFlush@i i `i  1 a 2 6 ]
+"324
+[v ErrFlush@count count `i  1 p 2 2 ]
+"334
 } 0
-"404
+"415
 [v _int_handler int_handler `II(v  1 e 1 0 ]
 {
-"461
-[v int_handler@voltage voltage `f  1 a 4 54 ]
-"473
-} 0
-"10 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\xxtofl.c
-[v i1___xxtofl __xxtofl `(d  1 e 4 0 ]
-{
-[v i1___xxtofl@sign sign `uc  1 a 1 wreg ]
-[v i1___xxtofl@arg __xxtofl `ul  1 a 4 10 ]
-[v i1___xxtofl@exp __xxtofl `uc  1 a 1 9 ]
-[v i1___xxtofl@sign sign `uc  1 a 1 wreg ]
-[v i1___xxtofl@val val `l  1 p 4 0 ]
-"15
-[v i1___xxtofl@sign sign `uc  1 a 1 8 ]
-"44
-} 0
-"8 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\sprcmul.c
-[v i1___flmul __flmul `(d  1 e 4 0 ]
-{
-[s S798 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
-[s S803 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
-[u S806 . 4 `l 1 i 4 0 `d 1 f 4 0 `S798 1 fAsBytes 4 0 `S803 1 fAsWords 4 0 ]
-[v i1___flmul@prod __flmul `S806  1 a 4 46 ]
-[v i1___flmul@grs __flmul `ul  1 a 4 40 ]
-[s S875 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
-[u S878 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S875 1 nAsBytes 2 0 ]
-[v i1___flmul@temp __flmul `S878  1 a 2 50 ]
-[v i1___flmul@bexp __flmul `uc  1 a 1 45 ]
-[v i1___flmul@aexp __flmul `uc  1 a 1 44 ]
-[v i1___flmul@sign __flmul `uc  1 a 1 39 ]
-[v i1___flmul@b b `d  1 p 4 26 ]
-[v i1___flmul@a a `d  1 p 4 30 ]
-"205
-} 0
-"4 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\Umul8_16.c
-[v i1__Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
-{
-[v i1__Umul8_16@multiplier multiplier `uc  1 a 1 wreg ]
-[v i1__Umul8_16@word_mpld _Umul8_16 `ui  1 a 2 6 ]
-[v i1__Umul8_16@product _Umul8_16 `ui  1 a 2 4 ]
-[v i1__Umul8_16@multiplier multiplier `uc  1 a 1 wreg ]
-[v i1__Umul8_16@multiplicand multiplicand `uc  1 p 1 0 ]
-[v i1__Umul8_16@multiplier multiplier `uc  1 a 1 8 ]
-"60
-} 0
-"4 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\flge.c
-[v i1___flge __flge `(b  1 e 0 0 ]
-{
-[v i1___flge@ff1 ff1 `d  1 p 4 0 ]
-[v i1___flge@ff2 ff2 `d  1 p 4 4 ]
-"19
-} 0
-"8 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\sprcdiv.c
-[v i1___fldiv __fldiv `(d  1 e 4 0 ]
-{
-[v i1___fldiv@grs __fldiv `ul  1 a 4 20 ]
-[v i1___fldiv@rem __fldiv `ul  1 a 4 13 ]
-[v i1___fldiv@new_exp __fldiv `i  1 a 2 18 ]
-[v i1___fldiv@aexp __fldiv `uc  1 a 1 25 ]
-[v i1___fldiv@bexp __fldiv `uc  1 a 1 24 ]
-[v i1___fldiv@sign __fldiv `uc  1 a 1 17 ]
-[v i1___fldiv@a a `d  1 p 4 0 ]
-[v i1___fldiv@b b `d  1 p 4 4 ]
-"185
+"472
 } 0

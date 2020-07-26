@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <pic16f15354.h>
 #include "HardwareConfig.H"
 
@@ -27,7 +28,6 @@ enum ErrReason
     LEDHiTempErr = 2,
     BoardHiTempErr = 3,
     LEDDrvErr = 4
-           
 };
 
 struct {
@@ -41,8 +41,7 @@ struct {
     unsigned int FVRC4X;
 } DIA_Table;
 
-#define LightCount 153
-#define TempChkInterval 10
+#define TempChkInterval 5
 /*
  * 
  */
@@ -55,6 +54,9 @@ enum ErrReason errReason;
 //low  95C -> 1.03V   -> 258
 const float upperLimit = 0.86;
 const float restoreLevel = 1.03;
+
+const float FanFBUpLimit = 1.2;
+const float FanFBLowLimit = 0.5;
 
 float intNTCV = 0;
 float extNTCV = 0;
@@ -150,6 +152,10 @@ void init(void){
    ExtNTCTRIS = IN;
    ExtNTCPinMode = ANALOG;
    
+   //FAN feedback I/O setting
+   FANFBTRIS = IN;
+   FANFBPinMode = ANALOG;
+   
    // LED FAULT I/O setting
     FaultTRIS = IN;
     FaultPinMode = DIGITAL;
@@ -204,8 +210,8 @@ void init(void){
     PIE1bits.ADIE = 0;
     
     
-    //auto-off and temperature monitor timer, not used now.
-    // 10s -> temperature check, 20s -> auto off
+    //auto-off lighting timer.
+    //  20s -> auto off
      T0EN = 1;  // Timer0 enable
      TMR0IE = 0;   // Timer0 interrupt disable
      T016BIT = 0;  // 8bit mode
@@ -318,7 +324,7 @@ void TestFlush(void)
 
 void ErrFlush(int count){
     LedIndTRIS = IN;
-     __delay_ms(1000);
+    __delay_ms(1000);
     LedInd = 1;
     for(int i=0;i<count; i++){
         LedIndTRIS = OUT;
@@ -365,6 +371,23 @@ void ledFaultCheck(void){
     }
 }
 
+// Check FAN Fault, in this error, we only change the LED indicator, so it's also thought as normal status
+bool FANFaultCheck(void){
+    
+    if(FAN == 0){
+        return true;
+    }
+    float fanFBVoltage;
+    fanFBVoltage = getNTCV(0x02);
+    if( (fanFBVoltage > FanFBUpLimit) || (fanFBVoltage < FanFBLowLimit)){
+        ErrFlush(1);
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
 
 // handle error status, restore system after error gone
 void ErrHanler(){
@@ -408,34 +431,27 @@ void __interrupt() int_handler(){
          IOCAF7 = 0;
          if(currentStatus == Normal){
          
-         __delay_ms(150);
-         if(PORTAbits.RA7 == 0){
+            __delay_ms(150);
+            if(PORTAbits.RA7 == 0){
              
-             Led = ~Led;
-             Laser = ~Laser;
-             
-             // if restore from error status, FAN is still running, need to decide by Led status
-             if(Led == 1){
-                 FAN = 1;
-             }else {
-                 FAN = 0;
-             }
-         }
-         
-             
-        
-         
-         // start timer to lighting and temperature check
-//         TMR0H = 0xFD;
-//         TMR0L = 0;
-//         TMR0IF = 0;
-//         timerCounter = 0;
-//         TMR0IE = 1;
-//         
-//         if(TMR2IF == 1){
-//             TRISCbits.TRISC2 = OUT;
-//         }
-//         
+                Led = ~Led;
+                Laser = ~Laser;
+                       
+                // if restore from error status, FAN is still running, need to decide by Led status
+                if(Led == 1){
+                    FAN = 1;
+                }else {
+                    FAN = 0;
+                }
+            } // end of RA7 == 0
+
+                               
+          //start timer0 to auto lighting off
+            TMR0H = 0xFD;
+            TMR0L = 0;
+            TMR0IF = 0;
+            timerCounter = 0;
+            TMR0IE = 1;
          }     
     }
     
@@ -443,34 +459,31 @@ void __interrupt() int_handler(){
     if(TMR0IE && TMR0IF){
         
         TMR0IF = 0;  // clear timer0 flag
-        if(timerCounter <= 152){
+        // we only need to turn off everything during normal status
+        if(currentStatus == Normal){
+        
+            if(timerCounter <= 153){
             
-            timerCounter++; // increment if no timeout
-        }
-        else{
-            TMR0IE = 0;   // timeout, disable timer0 interrupt
-            timerCounter = 0; 
-          //  TRISCbits.TRISC0 = IN; // lighting off
+                timerCounter++; // increment if no timeout
+            }
+            else{
+                TMR0IE = 0;   // timeout, disable timer0 interrupt
+                Led = 0;
+                Laser = 0;
+                FAN = 0;
+          
+            }
         }
     }
     
     // AD interrupt handler
     if(PIE1bits.ADIE && PIR1bits.ADIF){
        
-        PIR1bits.ADIF = 0;
-        float voltage = ((float)ADRES/1023)*DIA_Table.FVRA1X;
-        
-        if(voltage < 2 ){
-           
-            LedInd = 1;
-            LedIndTRIS = OUT;
-        }else {
-            LedInd = 0;
-            LedIndTRIS = OUT;
-        }
-    
+       // we don't use AD interrupt to handle result now
     }
 }
+
+
 
 int main(int argc, char** argv) {
     //start to initialize peripherals
@@ -481,8 +494,10 @@ int main(int argc, char** argv) {
         switch(currentStatus)
         {
             case Normal:
-                HeartBeatFlush();
-                
+                if(FANFaultCheck()){
+                  HeartBeatFlush();
+                }
+               
                 // we shutdown FAN when no high temperature error and Led off
                 if(Led == 0){
                     FAN = 0;
@@ -494,6 +509,8 @@ int main(int argc, char** argv) {
                     checkCount ++;
                 }
                ledFaultCheck();
+               
+              
             break;
   
             case Error:

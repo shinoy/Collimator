@@ -76,6 +76,11 @@ extern "C" {
 #define ExtNTCPinMode ANSELAbits.ANSA1
 
     
+//FAN feedback
+#define FANFBTRIS TRISAbits.TRISA2
+#define FANFB PORTAbits.RA2
+#define FANFBPinMode ANSELAbits.ANSA2
+    
 // the FAULT IRQ
 #define FaultTRIS  TRISBbits.TRISB0
 #define Fault  PORTBbits.RB0  // not use LAT here for input signal

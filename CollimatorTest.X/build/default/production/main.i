@@ -12596,7 +12596,6 @@ enum ErrReason
     LEDHiTempErr = 2,
     BoardHiTempErr = 3,
     LEDDrvErr = 4
-
 };
 
 struct {
@@ -12615,7 +12614,6 @@ struct {
 
 
 
-
 unsigned long timerCounter = 0;
 enum Status currentStatus;
 enum ErrReason errReason;
@@ -12624,6 +12622,9 @@ enum ErrReason errReason;
 
 const float upperLimit = 0.86;
 const float restoreLevel = 1.03;
+
+const float FanFBUpLimit = 1.2;
+const float FanFBLowLimit = 0.5;
 
 float intNTCV = 0;
 float extNTCV = 0;
@@ -12651,7 +12652,7 @@ void initDIA(void){
     DIA_Table.FVRC2X = read_DIA(0x811C);
     DIA_Table.FVRC4X = read_DIA(0x811D);
 }
-# 140 "main.c"
+# 141 "main.c"
 void init(void){
    currentStatus = Init;
 
@@ -12664,6 +12665,10 @@ void init(void){
 
    TRISAbits.TRISA1 = 1;
    ANSELAbits.ANSA1 = 1;
+
+
+   TRISAbits.TRISA2 = 1;
+   ANSELAbits.ANSA2 = 1;
 
 
     TRISBbits.TRISB0 = 1;
@@ -12768,7 +12773,7 @@ float getNTCV(unsigned channel){
 
     return voltage;
 }
-# 299 "main.c"
+# 304 "main.c"
 void HeartBeatFlush(void){
 
     TRISCbits.TRISC0 = 1;
@@ -12839,6 +12844,12 @@ void ledFaultCheck(void){
 }
 
 
+void FANFaultCheck(void){
+
+}
+
+
+
 
 void ErrHanler(){
 
@@ -12881,20 +12892,27 @@ void __attribute__((picinterrupt(("")))) int_handler(){
          IOCAF7 = 0;
          if(currentStatus == Normal){
 
-         _delay((unsigned long)((150)*(32000000/4000.0)));
-         if(PORTAbits.RA7 == 0){
+            _delay((unsigned long)((150)*(32000000/4000.0)));
+            if(PORTAbits.RA7 == 0){
 
-             LATCbits.LATC2 = ~LATCbits.LATC2;
-             LATCbits.LATC5 = ~LATCbits.LATC5;
+                LATCbits.LATC2 = ~LATCbits.LATC2;
+                LATCbits.LATC5 = ~LATCbits.LATC5;
 
 
-             if(LATCbits.LATC2 == 1){
-                 LATCbits.LATC7 = 1;
-             }else {
-                 LATCbits.LATC7 = 0;
-             }
-         }
-# 439 "main.c"
+                if(LATCbits.LATC2 == 1){
+                    LATCbits.LATC7 = 1;
+                }else {
+                    LATCbits.LATC7 = 0;
+                }
+            }
+
+
+
+            TMR0H = 0xFD;
+            TMR0L = 0;
+            TMR0IF = 0;
+            timerCounter = 0;
+            TMR0IE = 1;
          }
     }
 
@@ -12902,34 +12920,31 @@ void __attribute__((picinterrupt(("")))) int_handler(){
     if(TMR0IE && TMR0IF){
 
         TMR0IF = 0;
-        if(timerCounter <= 152){
 
-            timerCounter++;
-        }
-        else{
-            TMR0IE = 0;
-            timerCounter = 0;
+        if(currentStatus == Normal){
 
+            if(timerCounter <= 153){
+
+                timerCounter++;
+            }
+            else{
+                TMR0IE = 0;
+                LATCbits.LATC2 = 0;
+                LATCbits.LATC5 = 0;
+                LATCbits.LATC7 = 0;
+
+            }
         }
     }
 
 
     if(PIE1bits.ADIE && PIR1bits.ADIF){
 
-        PIR1bits.ADIF = 0;
-        float voltage = ((float)ADRES/1023)*DIA_Table.FVRA1X;
-
-        if(voltage < 2 ){
-
-            LATCbits.LATC0 = 1;
-            TRISCbits.TRISC0 = 0;
-        }else {
-            LATCbits.LATC0 = 0;
-            TRISCbits.TRISC0 = 0;
-        }
 
     }
 }
+
+
 
 int main(int argc, char** argv) {
 
@@ -12946,13 +12961,14 @@ int main(int argc, char** argv) {
                 if(LATCbits.LATC2 == 0){
                     LATCbits.LATC7 = 0;
                 }
-                if(checkCount >= 10){
+                if(checkCount >= 5){
                   temperatureCheck();
                   checkCount = 0;
                 } else {
                     checkCount ++;
                 }
                ledFaultCheck();
+               FANFaultCheck();
             break;
 
             case Error:
@@ -12971,7 +12987,7 @@ int main(int argc, char** argv) {
             break;
 
         }
-# 524 "main.c"
+# 526 "main.c"
    }
 
     return (0);
