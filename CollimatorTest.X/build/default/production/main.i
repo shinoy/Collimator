@@ -234,6 +234,9 @@ uldiv_t uldiv (unsigned long, unsigned long);
 size_t __ctype_get_mb_cur_max(void);
 # 9 "main.c" 2
 
+# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\c99\\stdbool.h" 1 3
+# 10 "main.c" 2
+
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\pic16f15354.h" 1 3
 # 44 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\pic16f15354.h" 3
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\__at.h" 1 3
@@ -12461,7 +12464,7 @@ extern volatile __bit nWRITE1 __attribute__((address(0xC7A)));
 
 
 extern volatile __bit nWRITE2 __attribute__((address(0xCCA)));
-# 10 "main.c" 2
+# 11 "main.c" 2
 
 # 1 "./HardwareConfig.H" 1
 # 16 "./HardwareConfig.H"
@@ -12576,7 +12579,7 @@ extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 27 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\xc.h" 2 3
 # 54 "./HardwareConfig.H" 2
-# 11 "main.c" 2
+# 12 "main.c" 2
 
 
 
@@ -12615,6 +12618,7 @@ struct {
 
 
 unsigned long timerCounter = 0;
+unsigned long lightingOffDelay = 230;
 enum Status currentStatus;
 enum ErrReason errReason;
 
@@ -12652,9 +12656,10 @@ void initDIA(void){
     DIA_Table.FVRC2X = read_DIA(0x811C);
     DIA_Table.FVRC4X = read_DIA(0x811D);
 }
-# 141 "main.c"
+# 143 "main.c"
 void init(void){
    currentStatus = Init;
+
 
    GIE = 1;
    INTCONbits.PEIE = 1;
@@ -12701,6 +12706,14 @@ void init(void){
     TRISCbits.TRISC7 = 0;
 
 
+    TRISBbits.TRISB2 = 1;
+    ANSELBbits.ANSB2 = 0;
+
+    TRISBbits.TRISB3 = 1;
+    ANSELBbits.ANSB3 = 0;
+
+
+
 
     PIE0bits.IOCIE = 1;
     IOCAN7 = 1;
@@ -12722,6 +12735,20 @@ void init(void){
     ADCON0bits.ADON = 0;
     PIR1bits.ADIF = 0;
     PIE1bits.ADIE = 0;
+
+
+    if(PORTBbits.RB2 == 0){
+        if(PORTBbits.RB3 == 0){
+         lightingOffDelay = 460;
+        } else
+        {
+         lightingOffDelay = 307;
+        }
+    } else {
+        if(PORTBbits.RB3 ==0 ){
+           lightingOffDelay = 383;
+        }
+    }
 
 
 
@@ -12773,7 +12800,7 @@ float getNTCV(unsigned channel){
 
     return voltage;
 }
-# 304 "main.c"
+# 329 "main.c"
 void HeartBeatFlush(void){
 
     TRISCbits.TRISC0 = 1;
@@ -12796,7 +12823,7 @@ void TestFlush(void)
 
 void ErrFlush(int count){
     TRISCbits.TRISC0 = 1;
-     _delay((unsigned long)((1000)*(32000000/4000.0)));
+    _delay((unsigned long)((1000)*(32000000/4000.0)));
     LATCbits.LATC0 = 1;
     for(int i=0;i<count; i++){
         TRISCbits.TRISC0 = 0;
@@ -12844,8 +12871,19 @@ void ledFaultCheck(void){
 }
 
 
-void FANFaultCheck(void){
+_Bool FANFaultCheck(void){
 
+    if(LATCbits.LATC7 == 0){
+        return 1;
+    }
+    float fanFBVoltage;
+    fanFBVoltage = getNTCV(0x02);
+    if( (fanFBVoltage > FanFBUpLimit) || (fanFBVoltage < FanFBLowLimit)){
+        ErrFlush(1);
+        return 0;
+    } else {
+        return 1;
+    }
 }
 
 
@@ -12923,7 +12961,7 @@ void __attribute__((picinterrupt(("")))) int_handler(){
 
         if(currentStatus == Normal){
 
-            if(timerCounter <= 153){
+            if(timerCounter <= lightingOffDelay){
 
                 timerCounter++;
             }
@@ -12955,7 +12993,9 @@ int main(int argc, char** argv) {
         switch(currentStatus)
         {
             case Normal:
-                HeartBeatFlush();
+                if(FANFaultCheck()){
+                  HeartBeatFlush();
+                }
 
 
                 if(LATCbits.LATC2 == 0){
@@ -12968,7 +13008,8 @@ int main(int argc, char** argv) {
                     checkCount ++;
                 }
                ledFaultCheck();
-               FANFaultCheck();
+
+
             break;
 
             case Error:
@@ -12987,7 +13028,7 @@ int main(int argc, char** argv) {
             break;
 
         }
-# 526 "main.c"
+# 565 "main.c"
    }
 
     return (0);

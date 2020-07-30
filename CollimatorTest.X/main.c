@@ -47,6 +47,7 @@ struct {
  */
 
 unsigned long timerCounter = 0;
+unsigned long lightingOffDelay = 230;
 enum Status currentStatus;
 enum ErrReason errReason;
 
@@ -141,6 +142,7 @@ void initDIA(void){
 /*********    Common startup/reset initialize   **************/
 void init(void){
    currentStatus = Init;
+   
   // enable global interrupt  
    GIE = 1;
    INTCONbits.PEIE = 1;
@@ -186,6 +188,14 @@ void init(void){
     FANPinMode = DIGITAL;
     FANTRIS = OUT;
     
+    // JP1 & 2 setting
+    JP1TRIS = IN;
+    JP1PinMode = DIGITAL;
+    
+    JP2TRIS = IN;
+    JP2PinMode = DIGITAL;
+    
+    
     // enable IOC interrupts 
  
     PIE0bits.IOCIE = 1;
@@ -208,6 +218,20 @@ void init(void){
     ADCON0bits.ADON = 0;
     PIR1bits.ADIF = 0;
     PIE1bits.ADIE = 0;
+    
+    // auto-off delay setting
+    if(JP1 == 0){
+        if(JP2 == 0){
+         lightingOffDelay = 460; // 60s delay
+        } else 
+        {
+         lightingOffDelay = 307; // 40s delay
+        }
+    } else {
+        if(JP2 ==0 ){
+           lightingOffDelay = 383; //50s delay
+        }
+    }
     
     
     //auto-off lighting timer.
@@ -462,7 +486,7 @@ void __interrupt() int_handler(){
         // we only need to turn off everything during normal status
         if(currentStatus == Normal){
         
-            if(timerCounter <= 153){
+            if(timerCounter <= lightingOffDelay){
             
                 timerCounter++; // increment if no timeout
             }

@@ -113,6 +113,15 @@ extern "C" {
 #define FANTRIS  TRISCbits.TRISC7
 #define FAN  LATCbits.LATC7
 #define FANPinMode  ANSELCbits.ANSC7
+    
+// the jumper 1 & 2
+#define JP1TRIS TRISBbits.TRISB2
+#define JP1 PORTBbits.RB2
+#define JP1PinMode ANSELBbits.ANSB2
+    
+#define JP2TRIS TRISBbits.TRISB3
+#define JP2 PORTBbits.RB3
+#define JP2PinMode ANSELBbits.ANSB3
 
 #ifdef	__cplusplus
 }
